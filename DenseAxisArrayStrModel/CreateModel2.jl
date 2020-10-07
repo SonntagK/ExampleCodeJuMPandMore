@@ -1,5 +1,7 @@
 using JuMP, CPLEX, JLD
 
+#use functions to build model
+
 function AddVariable!(model,n)
     @variable(model ,0<= x[str_obj]<=1)
     return model
