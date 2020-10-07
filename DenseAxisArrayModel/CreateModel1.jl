@@ -1,15 +1,16 @@
-using JuMP, CPLEX
+using JuMP, CPLEX, JLD
 
-#create Data
+#load Data
 
-n = 10
-m = 5
+dataDict = load("Data.jld")
 
-A = rand(m,n)
-b = rand(m)+ones(m)
+n = dataDict["n"]
+m = dataDict["m"]
 
-coeff = JuMP.Containers.DenseAxisArray(A,1:m,1:n)
-bound = JuMP.Containers.DenseAxisArray(b,1:m)
+
+
+coeff = dataDict["coeff"]
+bound = dataDict["bound"]
 
 # start model build
 
@@ -27,7 +28,7 @@ set_optimizer(model,CPLEX.Optimizer)
 
 JuMP.optimize!(model)
 
-JuMP.write_to_file(model, "Model.lp")
+JuMP.write_to_file(model, "Model1.lp")
 
 
 println("\n Objectie Variabels:")

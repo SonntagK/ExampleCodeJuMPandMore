@@ -1,4 +1,4 @@
-using JuMP, CPLEX
+using JuMP, CPLEX, JLD
 
 function AddVariable!(model,n)
     @variable(model,0<= x[1:n], container = DenseAxisArray)
@@ -17,16 +17,17 @@ function AddObjective!(model)
     return model
 end
 
-#create Data
+#load Data
 
-n = 10
-m = 5
+dataDict = load("Data.jld")
 
-A = rand(m,n)
-b = rand(m)+ones(m)
+n = dataDict["n"]
+m = dataDict["m"]
 
-coeff = JuMP.Containers.DenseAxisArray(A,1:m,1:n)
-bound = JuMP.Containers.DenseAxisArray(b,1:m)
+
+
+coeff = dataDict["coeff"]
+bound = dataDict["bound"]
 
 # start model build
 
