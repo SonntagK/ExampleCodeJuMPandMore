@@ -1,5 +1,8 @@
 using JuMP, CPLEX, JLD
 
+
+#use functions to build model
+
 function AddVariable!(model,n)
     @variable(model,0<= x[1:n], container = DenseAxisArray)
     return model
