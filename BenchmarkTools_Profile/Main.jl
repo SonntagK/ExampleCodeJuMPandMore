@@ -5,8 +5,6 @@ function ModelBuildAndOpt(coeff::JuMP.Containers.DenseAxisArray{Float64,2,Tuple{
 	#coeff 				matrix: for defintion of the linear constraints of the form coeff*x .<= bound
 	#bound 				array: for definition of constraints (see above)
 	#n 					integer: showing problem size
-	#directMode 		bool: info for model build
-	#optimization		bool: shall the JuMP model be optimized
 
 	m = Model();
 	set_optimizer(m, CPLEX.Optimizer)
@@ -18,17 +16,20 @@ function ModelBuildAndOpt(coeff::JuMP.Containers.DenseAxisArray{Float64,2,Tuple{
 	@objective(m, Max, sum(x[j] for j in 1:n))
 
 	JuMP.optimize!(m)
-end
+endW
 
-
+# load data
 dataDict = load("Data.jld")
 
 n = dataDict["n"]
 coeff = dataDict["coeff"]
 bound = dataDict["bound"]
 
+# settings for BenchmarkTools, namely maximal duration and maximal number of samples
 BenchmarkTools.DEFAULT_PARAMETERS.seconds = 5
 BenchmarkTools.DEFAULT_PARAMETERS.samples = 10
+
+# try the code below in the repl
 
 #@benchmark ModelBuildAndOpt(coeff,	bound, n)
 
